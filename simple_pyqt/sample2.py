@@ -1,5 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QCheckBox, QPushButton, QLabel
+from crawler.simple_crawler import SimpleCrawler
+
 
 class CheckBoxApp(QWidget):
     def __init__(self):
@@ -50,7 +52,8 @@ class CheckBoxApp(QWidget):
                 selected_options.append(checkbox.objectName())
 
         # 선택된 항목을 라벨에 표시
-        self.result_label.setText('Selected: ' + ', '.join(selected_options))
+        checkboxString = SimpleCrawler.test_method(selected_options)
+        self.result_label.setText('Selected: ' + checkboxString)
 
 
 if __name__ == '__main__':
