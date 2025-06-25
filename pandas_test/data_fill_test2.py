@@ -16,30 +16,9 @@ data = {
 }
 
 df = pd.DataFrame(data)
-df["event_datetime"] = pd.to_datetime(df["event_datetime"])
 
-# 2. 날짜 범위 지정
-start_date = pd.to_datetime("2022-01-01")
-end_date = pd.to_datetime("2022-01-07")
+# df = df.groupby(["이름"], group_keys=False).ffill()
+# df = df.groupby(["이름"]).apply(lambda x: x.ffill()).reset_index(drop=True)
+df[["연봉", "직업", "나이"]] = df.groupby("이름")[["연봉", "직업", "나이"]].ffill()
 
-# 3. 사람 × 날짜 조합 생성
-people = df["이름"].unique()
-print(people)
-full_dates = pd.date_range(start=start_date, end=end_date, freq="D")
-full_index = pd.MultiIndex.from_product(
-    [people, full_dates], names=["이름", "event_datetime"]
-)
-full_df = pd.DataFrame(index=full_index).reset_index()
-
-# 4. 원본 데이터 준비
-df_small = df[["이름", "event_datetime", "연봉", "직업", "나이"]].sort_values(
-    ["이름", "event_datetime"]
-)
-
-# 5. 병합 및 ffill
-merged = pd.merge(full_df, df_small, on=["이름", "event_datetime"], how="left")
-merged = merged.sort_values(["이름", "event_datetime"])
-merged = merged.groupby("이름").ffill()
-
-# 6. 결과 확인
-print(merged)
+print(df)
