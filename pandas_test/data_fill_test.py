@@ -66,6 +66,10 @@ def fill_by_year(df, entities, start, end):
 
     years_df = pd.date_range(start=f"{start}-01-01", end=f"{end}-01-01", freq="YS")
 
+    df_temp = df[entities].copy()
+    df_temp["key"] = 1
+    years_df["key"] = 1
+
     # 필요한 컬럼 정리
     entity_values = df[entities].drop_duplicates().values.flatten()
     merge_columns = entities + ["year"]
@@ -85,6 +89,9 @@ def fill_by_year(df, entities, start, end):
     merged_df = merged_df[merged_df[EVENT_TIMESTAMP].notna()]
 
     return merged_df
+
+
+    print(c)
 
 
 if __name__ == "__main__":
@@ -110,4 +117,4 @@ if __name__ == "__main__":
         ],
     }
     df = pd.DataFrame(data)
-    print(fill_by_year(df, entities, start, end))
+    print(fill_by_month(df, entities, start, end))
